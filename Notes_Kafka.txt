@@ -1,0 +1,24 @@
+	• Download zookeeper
+		○ Create a folder data at zookeeper root
+		○ Update zoo-sample.conf to zoo.conf: dataDir=C:\Software\zookeeper-3.4.14\data
+		○ Start zookeeper: C:\Software\zookeeper-3.4.14\bin\zkServer.cmd
+	• Download kafka
+	• Command to run kafka: C:\Software\kafka_2.11-2.0.1\bin\windows\kafka-server-start.bat C:\Software\kafka_2.11-2.0.1\config\server.properties
+	• Create topic: kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test
+		○ If using older kafka, before 2.2:   kafka-topics.bat --create --zookeeper localhost:2181--replication-factor 1 --partitions 1 --topic test
+	• check topics:
+		○ kafka-topics.bat --list --zookeeper localhost:2181
+	• Send message from producer:
+		○ kafka-console-producer.bat --broker-list localhost:2181 --topic test
+	• Start consumer
+		○ kafka-console-consumer.bat --bootstrap-server localhost:2181 --topic test --from-beginning
+
+
+--------------Word count application------------
+
+
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic word-count-input
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 2 --topic word-count-output
+kafka-console-producer.bat --broker-list localhost:9092 --topic word-count-input
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic word-count-output --from-beginning --formatter kafka.tools.DefaultMessageFormatter --property print.key=true --property print.value=true --property key.deserializer=org.apache.kafka.common.serialization.StringDeserializer --property value.deserializer=org.apache.kafka.common.serialization.LongDeserializer
