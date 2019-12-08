@@ -1,0 +1,22 @@
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic table1
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic table2
+
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic joined-output
+
+
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic table1 --property "parse.key=true" --property "key.separator=:"
+1:ashish
+2:aman
+3:amit
+
+
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic table2 --property "parse.key=true" --property "key.separator=:"
+
+1:bhatnagar
+2:gupta
+3:jain
+
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic joined-output --from-beginning
